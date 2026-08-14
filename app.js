@@ -230,6 +230,10 @@ function navigateToStep(stepId) {
 async function callGemini(payload, model = 'gemini-3.6-flash') {
   const localKey = localStorage.getItem('sparky_gemini_api_key');
   
+  if (!localKey && (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    throw new Error('You are running Sparky Quiz locally. To test it, click the settings gear (⚙️) in the top-right and enter your Gemini API Key. The Vercel serverless proxy is only active when deployed to Vercel!');
+  }
+  
   if (localKey) {
     // Direct call (client-side)
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${localKey}`;

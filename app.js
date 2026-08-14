@@ -691,6 +691,12 @@ function resetQuizFlow() {
   state.currentQuestionIndex = 0;
   state.studentAnswers = {};
   state.gradingResult = null;
+  state.uploadedImages = [];
+  
+  // Clear file inputs and preview grids
+  elements.imageInput.value = '';
+  renderPreviews();
+  updateGenerateButtonState();
   
   // Clear inputs
   elements.textAnswer.value = '';

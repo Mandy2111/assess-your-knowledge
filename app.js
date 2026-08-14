@@ -1,6 +1,6 @@
 /**
  * 🌟 app.js
- * Sparky Quiz Frontend Logic & State Management
+ * PupQuiz Frontend Logic & State Management
  */
 
 // Application State
@@ -231,7 +231,7 @@ async function callGemini(payload, model = 'gemini-3.6-flash') {
   const localKey = localStorage.getItem('sparky_gemini_api_key');
   
   if (!localKey && (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    throw new Error('You are running Sparky Quiz locally. To test it, click the settings gear (⚙️) in the top-right and enter your Gemini API Key. The Vercel serverless proxy is only active when deployed to Vercel!');
+    throw new Error('You are running PupQuiz locally. To test it, click the settings gear (⚙️) in the top-right and enter your Gemini API Key. The Vercel serverless proxy is only active when deployed to Vercel!');
   }
   
   if (localKey) {

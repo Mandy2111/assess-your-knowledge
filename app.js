@@ -277,6 +277,8 @@ async function startTestGeneration() {
   const subject = document.getElementById('subject-select').value;
   const count = parseInt(document.getElementById('count-select').value);
   const style = document.getElementById('style-select').value;
+  const grade = document.getElementById('grade-select').value;
+  const difficulty = document.getElementById('difficulty-select').value;
   
   elements.loaderStatus.textContent = 'Sparky is reading the worksheet... 📖';
   navigateToStep('step-loading');
@@ -291,11 +293,13 @@ async function startTestGeneration() {
     }));
     
     const systemPrompt = `You are an expert elementary school teacher creating worksheets and quizzes. 
-Generate a Class 3 standard (around age 8-9) interactive test based on the educational content found in the provided screenshots.
-Strictly ensure that questions are child-friendly and suitable for Grade 3 reading/comprehension levels.
+Generate a ${grade} standard interactive test based on the educational content found in the provided screenshots.
+The questions should be appropriate for ${grade} students with a ${difficulty} difficulty level.
+Strictly ensure that questions are child-friendly and suitable for the reading/comprehension level of ${grade}.
 Create exactly ${count} questions. 
 Subject: ${subject}
 Tone Style: ${style}
+Difficulty Level: ${difficulty}
 
 Mix these three types of questions:
 - multiple-choice: Include exactly 4 options. Make options distinct and clear.
@@ -337,7 +341,7 @@ Output the result in JSON matching the schema format. Make sure the correctAnswe
         {
           parts: [
             ...imageParts,
-            { text: `Create a Grade 3 quiz on ${subject} containing exactly ${count} questions based on these materials.` }
+            { text: `Create a ${grade} quiz (difficulty: ${difficulty}) on ${subject} containing exactly ${count} questions based on these materials.` }
           ]
         }
       ],
@@ -360,7 +364,7 @@ Output the result in JSON matching the schema format. Make sure the correctAnswe
     // Initialize Quiz Player
     state.currentQuestionIndex = 0;
     state.studentAnswers = {};
-    elements.quizTitle.textContent = state.quizData.title || `Grade 3 ${subject}`;
+    elements.quizTitle.textContent = state.quizData.title || `${grade} ${subject}`;
     
     navigateToStep('step-quiz');
     loadQuestion(0);
@@ -507,9 +511,10 @@ async function gradeTestSubmission() {
   navigateToStep('step-loading');
   
   try {
-    const systemPrompt = `You are a supportive, encouraging AI grading assistant for Grade 3 students.
+    const grade = state.quizData.grade || 'Grade 3';
+    const systemPrompt = `You are a supportive, encouraging AI grading assistant for ${grade} students.
 Grade the student's test answers based on the correct answers.
-Be flexible: if it's a fill-in-the-blank or short-answer and the meaning is correct, or there is a minor spelling mistake suitable for an 8-year-old, mark it correct (isCorrect: true).
+Be flexible: if it's a fill-in-the-blank or short-answer and the meaning is correct, or there is a minor spelling mistake suitable for a student of this grade, mark it correct (isCorrect: true).
 For each question, explain why it was correct or how they can improve in a gentle, warm, and highly positive manner.
 For the overall feedback, write a highly encouraging response from Sparky, the cute puppy mascot.
 Output the grading result in JSON matching the schema.`;

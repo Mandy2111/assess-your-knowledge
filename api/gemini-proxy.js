@@ -30,9 +30,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // We default to gemini-2.5-flash which is ideal for this multimodal/multilingual task.
-    // Allow custom model parameter in request query if desired, default to gemini-2.5-flash.
-    const model = req.query.model || 'gemini-2.5-flash';
+    // We default to gemini-3.7-flash which is ideal for this multimodal/multilingual task.
+    // Allow custom model parameter in request query if desired, default to gemini-3.7-flash.
+    const model = req.query.model || 'gemini-3.7-flash';
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(geminiUrl, {

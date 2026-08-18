@@ -306,7 +306,9 @@ Mix these three types of questions:
 - fill-in-the-blank: A question containing a clear sentence with a missing word or phrase.
 - short-answer: A simple descriptive question where the child writes a short sentence.
 
-Output the result in JSON matching the schema format. Make sure the correctAnswer matches the expected text or option. Provide a helpful, friendly hint for the kid.`;
+Output the result in JSON matching the schema format. Make sure the correctAnswer matches the expected text or option. Provide a helpful, friendly hint for the kid.
+
+IMPORTANT: If the subject is Hindi, generate questions, answers, and hints strictly in Hindi. For all other subjects, generate in English.`;
 
     const responseSchema = {
       type: 'OBJECT',

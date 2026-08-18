@@ -362,7 +362,12 @@ IMPORTANT: If the subject is Hindi, generate questions, answers, and hints stric
     // Parse response content
     const responseText = result.candidates[0].content.parts[0].text;
     console.log("Raw API Response:", responseText); // Debugging
-    const cleanJson = responseText.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
+    // More robust cleanup: remove everything before the first '{' and after the last '}'
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+    const cleanJson = (firstBrace !== -1 && lastBrace !== -1) 
+      ? responseText.substring(firstBrace, lastBrace + 1) 
+      : responseText;
     state.quizData = JSON.parse(cleanJson);
 
     
@@ -578,7 +583,12 @@ Output the grading result in JSON matching the schema.`;
     // Parse results
     const responseText = result.candidates[0].content.parts[0].text;
     console.log("Raw API Response (Grading):", responseText); // Debugging
-    const cleanJson = responseText.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
+    // More robust cleanup: remove everything before the first '{' and after the last '}'
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+    const cleanJson = (firstBrace !== -1 && lastBrace !== -1) 
+      ? responseText.substring(firstBrace, lastBrace + 1) 
+      : responseText;
     state.gradingResult = JSON.parse(cleanJson);
 
     

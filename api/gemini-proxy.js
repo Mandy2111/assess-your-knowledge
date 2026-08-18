@@ -30,9 +30,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // We default to gemini-1.5-flash which is stable and ideal for this task.
-    // Allow custom model parameter in request query if desired, default to gemini-1.5-flash.
-    const model = req.query.model || 'gemini-1.5-flash';
+    // We default to gemini-3.6-flash which is stable and ideal for this task.
+    // Allow custom model parameter in request query if desired, default to gemini-3.6-flash.
+    const model = req.query.model || 'gemini-3.6-flash';
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(geminiUrl, {

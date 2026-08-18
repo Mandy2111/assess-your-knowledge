@@ -298,6 +298,7 @@ main {
   color: var(--text-main);
   outline: none;
   transition: border-color 0.2s;
+  width: 100%;
 }
 
 .form-select:focus, .form-input:focus {

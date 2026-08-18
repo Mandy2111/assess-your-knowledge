@@ -303,6 +303,7 @@ async function callGemini(payload, model = 'gemini-3.6-flash') {
 async function startTestGeneration() {
   const subject = document.getElementById('subject-select').value;
   const count = parseInt(document.getElementById('count-select').value);
+  const format = document.getElementById('format-select').value;
   const style = document.getElementById('style-select').value;
   const grade = document.getElementById('grade-select').value;
   const difficulty = document.getElementById('difficulty-select').value;
@@ -319,6 +320,19 @@ async function startTestGeneration() {
       }
     }));
     
+    // Format selection instructions
+    let formatInstructions = '';
+    if (format === 'MCQ') {
+      formatInstructions = 'Generate ONLY multiple-choice questions. Include exactly 4 options for each question. Make options distinct and clear.';
+    } else if (format === 'Fill-in-the-blanks') {
+      formatInstructions = 'Generate ONLY fill-in-the-blank questions. Each question should contain a clear sentence with a missing word or phrase.';
+    } else if (format === 'Short-answer') {
+      formatInstructions = 'Generate ONLY short-answer questions. Each question should be a simple descriptive question where the child writes a short sentence.';
+    } else {
+      // Mixed format (default)
+      formatInstructions = 'Mix these three types of questions:\n- multiple-choice: Include exactly 4 options. Make options distinct and clear.\n- fill-in-the-blank: A question containing a clear sentence with a missing word or phrase.\n- short-answer: A simple descriptive question where the child writes a short sentence.';
+    }
+    
     const systemPrompt = `You are an expert elementary school teacher creating worksheets and quizzes. 
 Generate a ${grade} standard interactive test based on the educational content found in the provided screenshots.
 The questions should be appropriate for ${grade} students with a ${difficulty} difficulty level.
@@ -327,11 +341,9 @@ Create exactly ${count} questions.
 Subject: ${subject}
 Tone Style: ${style}
 Difficulty Level: ${difficulty}
+Question Format: ${format}
 
-Mix these three types of questions:
-- multiple-choice: Include exactly 4 options. Make options distinct and clear.
-- fill-in-the-blank: A question containing a clear sentence with a missing word or phrase.
-- short-answer: A simple descriptive question where the child writes a short sentence.
+${formatInstructions}
 
 Output the result in JSON matching the schema format. Make sure the correctAnswer matches the expected text or option. Provide a helpful, friendly hint for the kid.
 

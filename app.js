@@ -227,7 +227,7 @@ function navigateToStep(stepId) {
 }
 
 // Call Gemini API (dual mode: direct or vercel proxy)
-async function callGemini(payload, model = 'gemini-1.5-flash-latest') {
+async function callGemini(payload, model = 'gemini-1.5-flash-8b') {
   const localKey = localStorage.getItem('sparky_gemini_api_key');
   
   if (!localKey && (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {

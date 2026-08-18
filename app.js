@@ -359,7 +359,9 @@ Output the result in JSON matching the schema format. Make sure the correctAnswe
     
     // Parse response content
     const responseText = result.candidates[0].content.parts[0].text;
-    state.quizData = JSON.parse(responseText);
+    const cleanJson = responseText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    state.quizData = JSON.parse(cleanJson);
+
     
     // Initialize Quiz Player
     state.currentQuestionIndex = 0;
@@ -572,7 +574,9 @@ Output the grading result in JSON matching the schema.`;
     
     // Parse results
     const responseText = result.candidates[0].content.parts[0].text;
-    state.gradingResult = JSON.parse(responseText);
+    const cleanJson = responseText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    state.gradingResult = JSON.parse(cleanJson);
+
     
     renderResults();
     

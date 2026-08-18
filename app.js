@@ -162,26 +162,53 @@ function setupEventListeners() {
 }
 
 // File Upload Logic
-function handleFiles(files) {
-  Array.from(files).forEach(file => {
+async function resizeImage(dataUrl, maxWidth = 1200) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = dataUrl;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+
+      if (width > maxWidth) {
+        height *= maxWidth / width;
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      // Compress as JPEG to ensure small size
+      resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+    };
+  });
+}
+
+async function handleFiles(files) {
+  for (const file of Array.from(files)) {
     if (!file.type.startsWith('image/')) {
       alert('Please upload image files only (PNG, JPG, WebP).');
-      return;
+      continue;
     }
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const base64Data = reader.result.split(',')[1];
+    reader.onloadend = async () => {
+      // Resize before storing
+      const compressedDataUrl = await resizeImage(reader.result);
+      const base64Data = compressedDataUrl.split(',')[1];
+      
       state.uploadedImages.push({
-        mimeType: file.type,
+        mimeType: 'image/jpeg',
         data: base64Data,
-        dataUrl: reader.result // For preview
+        dataUrl: compressedDataUrl
       });
       renderPreviews();
       updateGenerateButtonState();
     };
-  });
+  }
 }
 
 function renderPreviews() {

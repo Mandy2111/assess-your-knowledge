@@ -527,7 +527,9 @@ Grade the student's test answers based on the correct answers.
 Be flexible: if it's a fill-in-the-blank or short-answer and the meaning is correct, or there is a minor spelling mistake suitable for a student of this grade, mark it correct (isCorrect: true).
 For each question, explain why it was correct or how they can improve in a gentle, warm, and highly positive manner.
 For the overall feedback, write a highly encouraging response from Sparky, the cute puppy mascot.
-Output the grading result in JSON matching the schema.`;
+Output the grading result in JSON matching the schema.
+
+IMPORTANT: If the subject is Hindi, provide the feedback and explanation in Hindi. For all other subjects, generate in English.`;
 
     const gradingSchema = {
       type: 'OBJECT',
